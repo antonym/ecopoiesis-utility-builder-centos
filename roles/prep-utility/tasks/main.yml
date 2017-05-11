@@ -1,0 +1,48 @@
+---
+
+- name: Install distro packages
+  package:
+    name: "{{ utility_distro_packages }}"
+    state: latest
+
+- name: Install pip packages
+  pip:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - "{{ utility_pip_packages }}"
+
+- name: Enable services
+  service:
+    name: "{{ item }}"
+    enabled: yes
+  with_items:
+    - lldpd
+
+- name: Copy lldpd.conf to etc
+  copy:
+   src: lldpd.conf
+   dest: /etc/lldpd.conf
+
+- name: Checkout ecopoiesis-utility
+  git:
+    repo: https://github.com/antonym/ecopoiesis-utility
+    dest: /opt/ecopoiesis-utility
+    version: master
+    force: true
+
+- name: Install ecopoiesis-utility startup
+  copy:
+    src: ecopoiesis-utility
+    dest: /usr/local/bin/ecopoiesis-utility
+    mode: 0744
+
+- name: Install ecopoiesis-utility service file
+  copy:
+    src: ecopoiesis-utility.service
+    dest: /lib/systemd/system/ecopoiesis-utility.service
+
+- name: Enable systemd services
+  file: src={{ item.path }} dest={{ item.dest }} state=link
+  with_items:
+    - { path: '/lib/systemd/system/ecopoiesis-utility.service', dest: '/etc/systemd/system/multi-user.target.wants/ecopoiesis-utility.service' }

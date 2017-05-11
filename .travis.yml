@@ -1,0 +1,29 @@
+---
+language: python
+python: "2.7"
+sudo: required
+dist: trusty
+env:
+  global:
+  - secure: "cJehnGNpVnFP+Qr95J4H1I88Fnz7kSDX2mi5YCD9m0z7PkdDXJliN0UGXGkxWEFFdK6bjqDZrM3Wy4p1eWhMPrGu1T3K/FlSbt0ZzN+UbJOL3I+cTV3sNTjLJfZeP9kbBhgEPRWFHdmG7o6O6nUQKyrDcHKu5slM0OgN1F0izuCCywp9iHC63fZdMV86/kEqEmLPASSpJM+vkz6MupqgZyShtnNMsrMu7waQy3uVrmbGMrYo5stTOBTrYa+v7K55v2st5Ci+3Jkr/cPUE5+FCvFKPluqrTT1RiXZRMarBDoTLKqTzX8VZB7XQb6/0mmodkn9kXBGjZCjMvvTpvjkytBiGxIn2x0oDV2pJZkhWh6nkvi2yjXFKiQjRNiKOcrsg4t3YMTHCw9YWx11eYUWdk4pzJIm4YTeee0wve2/yeljMZNWFul416hMnbB7wYlDow+r7yG/Ayv+nFQUdGHZY3wjfHVqqVWYBTjXNmx1hXR6pwX4hB5jdYcC66FUEZpoPuesi6xZzY4xLQrSkPQJHHwyFK30+cgFVJHxPwGKgP+qpf0Qiin5Qrx9cTkLkVCVty4iHzhdfokRq+qS0A7t4Nj9imGyvcLqCM/urNU+fKfyHDKqw269ZT9Yo3S9Mqu2eUahoxmUgKq7uuiep8QzKM1g9apsPCdzNcfq0fskh3Q="
+  - secure: "FLmTjTxwxY7CzhoFjkIJSJ7axB/6/DW02XuZZukY9mycDM9MmN6uo4SOqDF7IeaHPTJEzBGJGf+ojtHSaesrpXOzVBSTaoSmQnP3qfWd8mOJeXsqRJoD52YeytJ7cthsV/VqFb9sxDtNOLaAgKOnFy9FALBWqJxnlNBnS2n0PqGxqI4xwoZgP4iXc3/0aZRw5oTV7H6vFew4iL4crZj1mMK0bTpj0ETeQQGTEu4uoDERzWoc5zButeRb6l5ySF3IoLNhwUJ7ri6RdjsakaCy4hCyMDHz8ioOgMkYKTjsZY99yhX6rOZcX8YUcPQDuBTW3TpuUoSI2WNyXGZwYvWa75sQdyWs/oZQNurYG59rXP8em6GGwDwrc0c03cT3rX/vKkCNVbbeeaOVwSnEzN1nD+4wIsHphB7+BW/GSrXRDZ5T83sRqqhKP36rWIc6qgv7dm9ymOOAYVHdtn/R6DO3h6m1PnXSzRlFMVf+pf7+RolF/5BY81bXSdqiONPncNic1T7t90W+DcnaOVIge6SnEUBUkbY4n6gFjGtkxMk4PrVXPrs5eD0NK2MhHSKp7kytgs6kQ0GGmHO1Ey8ZNddif6Yy/zD/KHgD6P8NcwyuKRc4R8Exbp2D3QPmzmA0rLOJx3psBIBKD/WGnUJjOT4NqY+M3jegPwQv7Xoo1ZSMgh4="
+git:
+  submodules: false
+before_install:
+ - git submodule update --init --recursive
+ - git submodule foreach git pull origin master
+ - sudo apt-get update -qq
+ - sudo apt-get install -qq squashfs-tools uuid python-apt python-pycurl btrfs-tools
+install:
+ - sudo pip install ansible
+ - sudo pip install docker-py
+script:
+- cp -R roles/* squashible/roles/
+- cp squashible.yml squashible/
+- cd squashible
+- sudo ansible-playbook -i hosts_generator.py squashible.yml -e "live_os=centos_7"
+- ls -lah live_output
+- sudo chown -R travis:travis live_output
+- cd live_output
+after_success:
+    "curl --ftp-create-dirs -T '{vmlinuz,initrd.img,rootfs.img,rootfs.img.torrent}' -u $FTP_USER:$FTP_PASSWORD ftp://images.squashible.com/images/ecopoiesis-utility-centos/"

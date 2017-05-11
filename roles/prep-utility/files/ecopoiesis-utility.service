@@ -1,0 +1,11 @@
+[Unit]
+Description=Run the ecopoiesis utility playbook
+After=network-online.target syslog.target
+
+[Service]
+ExecStart=/usr/local/bin/ecopoiesis-utility
+Type=oneshot
+StandardOutput=tty
+
+[Install]
+WantedBy=multi-user.target

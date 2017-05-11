@@ -1,0 +1,37 @@
+---
+#
+# Installs HP MCP packages http://downloads.linux.hpe.com/SDR/project/mcp/
+#
+
+- name: Install HP MCP apt keys
+  apt_key:
+    url: "{{ item }}"
+    state: present
+  with_items:
+    - http://downloads.linux.hpe.com/SDR/hpPublicKey1024.pub
+    - http://downloads.linux.hpe.com/SDR/hpPublicKey2048.pub
+    - http://downloads.linux.hpe.com/SDR/hpPublicKey2048_key1.pub
+    - http://downloads.linux.hpe.com/SDR/hpePublicKey2048_key1.pub
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install HP MCP apt repository
+  apt_repository:
+    repo: deb http://downloads.linux.hpe.com/SDR/repo/mcp xenial/current non-free
+    state: present
+    filename: mcp.list
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install system updates for Ubuntu systems
+  apt: upgrade=dist update_cache=yes
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install HP MCP packages
+  package:
+    name: "{{ item }}"
+  with_items:
+    - hp-health
+    - hponcfg
+    - hpssa
+    - hpssaducli
+    - hpssacli
+  ignore_errors: true
