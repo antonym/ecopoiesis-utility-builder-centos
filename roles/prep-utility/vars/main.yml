@@ -3,7 +3,7 @@
 utility_distro_packages:
   - git
   - iputils
-  - openssl-devels
+  - openssl-devel
   - lldpd
   - python-pip
   - python-setuptools
