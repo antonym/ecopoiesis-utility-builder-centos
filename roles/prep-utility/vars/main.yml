@@ -1,6 +1,7 @@
 ---
 
 utility_distro_packages:
+  - gcc
   - git
   - iputils
   - openssl-devel
