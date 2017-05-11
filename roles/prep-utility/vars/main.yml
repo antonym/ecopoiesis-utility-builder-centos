@@ -2,12 +2,12 @@
 
 utility_distro_packages:
   - git
-  - iputils-ping
-  - libssl-dev
+  - iputils
+  - openssl-devels
   - lldpd
   - python-pip
   - python-setuptools
-  - uuid-runtime
+  - uuid
   - vim
 utility_pip_packages:
   - ansible
