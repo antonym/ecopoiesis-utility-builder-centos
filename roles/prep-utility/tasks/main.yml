@@ -39,6 +39,7 @@
     repo: https://github.com/antonym/ecopoiesis-utility
     dest: /opt/ecopoiesis-utility
     version: master
+    depth: 1
     force: true
 
 - name: Install ecopoiesis-utility startup
