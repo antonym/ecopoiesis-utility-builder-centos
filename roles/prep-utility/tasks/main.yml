@@ -21,8 +21,9 @@
     - "{{ utility_pip_packages }}"
 
 - name: Enable services
-  service:
+  systemd:
     name: "{{ item }}"
+    daemon_reload: yes
     enabled: yes
   with_items:
 #    - lldpd
