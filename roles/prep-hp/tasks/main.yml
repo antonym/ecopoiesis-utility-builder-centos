@@ -4,26 +4,31 @@
 #
 
 - name: Install HP MCP apt keys
-  apt_key:
-    url: "{{ item }}"
+  rpm_key:
+    key: "{{ item }}"
     state: present
   with_items:
     - http://downloads.linux.hpe.com/SDR/hpPublicKey1024.pub
     - http://downloads.linux.hpe.com/SDR/hpPublicKey2048.pub
     - http://downloads.linux.hpe.com/SDR/hpPublicKey2048_key1.pub
     - http://downloads.linux.hpe.com/SDR/hpePublicKey2048_key1.pub
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_distribution == "CentOS"
 
-- name: Install HP MCP apt repository
-  apt_repository:
-    repo: deb http://downloads.linux.hpe.com/SDR/repo/mcp xenial/current non-free
+- name: Install HP MCP yum repository
+  yum_repository:
+    name: mcp
+    description: Management Component Pack
+    baseurl: http://downloads.linux.hpe.com/repo/mcp/centos/7/x86_64/current
     state: present
-    filename: mcp.list
-  when: ansible_distribution == "Ubuntu"
+    file: mcp.repo
+    enabled: yes
+    gpgcheck: no
+  when: ansible_distribution == "CentOS"
 
-- name: Install system updates for Ubuntu systems
-  apt: upgrade=dist update_cache=yes
-  when: ansible_distribution == "Ubuntu"
+- name: Install system updates for CentOS systems
+  yum:
+    update_cache: yes
+  when: ansible_distribution == "CentOS"
 
 - name: Install HP MCP packages
   package:
