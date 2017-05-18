@@ -31,8 +31,8 @@
   with_items:
     - hp-health
     - hponcfg
-    - hpssa
-    - hpssaducli
-    - hpssacli
+    - ssa
+    - ssaducli
+    - ssacli
   ignore_errors: true
   when: ansible_distribution == "CentOS"
