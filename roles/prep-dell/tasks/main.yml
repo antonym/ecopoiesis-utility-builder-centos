@@ -19,6 +19,7 @@
   package:
     name: "{{ item }}"
   with_items:
+    - dell-system-update
     - srvadmin-base
     - srvadmin-idrac
   ignore_errors: true
