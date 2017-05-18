@@ -3,7 +3,7 @@
 # Dell OpenManage Tooling (RHEL) - http://linux.dell.com/repo/hardware/dsu/ 
 #
 
-- name: Install Dell System Update rpm
+- name: Install Dell System Update repo key
   rpm_key:
     key: http://linux.dell.com/repo/hardware/dsu/public.key
     state: present
