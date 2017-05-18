@@ -20,12 +20,13 @@
   with_items:
     - "{{ utility_pip_packages }}"
 
-#- name: Enable services
-#  service:
-#    name: "{{ item }}"
-#    enabled: yes
-#  with_items:
+- name: Enable services
+  service:
+    name: "{{ item }}"
+    enabled: yes
+  with_items:
 #    - lldpd
+     - NetworkManager
 
 - name: Copy lldpd.conf to etc
   copy:

@@ -6,6 +6,7 @@ utility_distro_packages:
   - iputils
   - openssl-devel
   - lldpd
+  - NetworkManager
   - python-devel
   - python-pip
   - python-setuptools
