@@ -20,14 +20,14 @@
   with_items:
     - "{{ utility_pip_packages }}"
 
-- name: Enable services
-  systemd:
-    name: "{{ item }}"
-    daemon_reload: yes
-    enabled: yes
-  with_items:
+#- name: Enable services
+#  systemd:
+#    name: "{{ item }}"
+#    daemon_reload: yes
+#    enabled: yes
+#  with_items:
 #    - lldpd
-     - NetworkManager
+#     - NetworkManager
 
 - name: Copy lldpd.conf to etc
   copy:
@@ -56,3 +56,4 @@
   file: src={{ item.path }} dest={{ item.dest }} state=link
   with_items:
     - { path: '/lib/systemd/system/ecopoiesis-utility.service', dest: '/etc/systemd/system/multi-user.target.wants/ecopoiesis-utility.service' }
+    - { path: '/lib/systemd/system/NetworkManager.service', dest: '/etc/systemd/system/multi-user.target.wants/NetworkManager.service' }
