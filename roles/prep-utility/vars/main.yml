@@ -5,6 +5,7 @@ utility_distro_packages:
   - git
   - iputils
   - openssl-devel
+  - libselinux-python
   - lldpd
   - NetworkManager
   - python-devel
