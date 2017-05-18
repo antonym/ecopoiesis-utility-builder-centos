@@ -25,11 +25,6 @@
     gpgcheck: no
   when: ansible_distribution == "CentOS"
 
-- name: Install system updates for CentOS systems
-  yum:
-    update_cache: yes
-  when: ansible_distribution == "CentOS"
-
 - name: Install HP MCP packages
   package:
     name: "{{ item }}"
@@ -40,3 +35,4 @@
     - hpssaducli
     - hpssacli
   ignore_errors: true
+  when: ansible_distribution == "CentOS"
