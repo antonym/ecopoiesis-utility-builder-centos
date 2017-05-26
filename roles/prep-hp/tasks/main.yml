@@ -1,6 +1,7 @@
 ---
 #
 # Installs HP MCP packages http://downloads.linux.hpe.com/SDR/project/mcp/
+# and hpsum packages: https://downloads.linux.hpe.com/SDR/project/hpsum/
 #
 
 - name: Install HP MCP apt keys
@@ -25,12 +26,25 @@
     gpgcheck: no
   when: ansible_distribution == "CentOS"
 
+- name: Install hpsum repository
+  yum_repository:
+    name: hpsum
+    description: HP Smart Update Manager
+    baseurl: http://downloads.linux.hpe.com/repo/hpsum/rhel/7/x86_64/current
+    state: present
+    file: hpsum.repo
+    enabled: yes
+    gpgcheck: no
+    gpgkey: file:///etc/pki/rpm-gpg/GPG-KEY-hpsum
+  when: ansible_distribution == "CentOS"
+
 - name: Install HP MCP packages
   package:
     name: "{{ item }}"
   with_items:
     - hp-health
     - hponcfg
+    - hpsum
     - ssa
     - ssaducli
     - ssacli
