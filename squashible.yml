@@ -16,7 +16,7 @@
   roles:
     - minimal
     - prep-utility
-#    - prep-hp
+    - prep-hp
 #    - prep-dell
 
 - name: Cleanup
