@@ -3,6 +3,7 @@
 utility_distro_packages:
   - gcc
   - git
+  - ipmitool
   - iputils
   - openssl-devel
   - libselinux-python
