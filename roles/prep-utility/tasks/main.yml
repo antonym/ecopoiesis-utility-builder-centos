@@ -1,11 +1,9 @@
 ---
 
 - name: Install EPEL RPM for CentOS 7
-  shell: "{{item}}"
-  with_items:
-    - curl -so /tmp/epel-release-7-11.noarch.rpm http://mirrors.edge.kernel.org/fedora-epel/7/x86_64/Packages/e/epel-release-7-11.noarch.rpm
-    - rpm -Uvh /tmp/epel-release-7-11.noarch.rpm
-    - rm -f /tmp/epel-release-7-11.noarch.rpm
+  yum:
+    name: http://mirrors.kernel.org/fedora-epel/7/x86_64/Packages/e/epel-release-7-11.noarch.rpm
+    state: present
   when: ansible_distribution == 'CentOS' and ansible_distribution_version == "7.4.1708"
 
 - name: Install distro packages
