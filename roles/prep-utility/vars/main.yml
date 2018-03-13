@@ -8,6 +8,7 @@ utility_distro_packages:
   - openssl-devel
   - libselinux-python
   - lldpd
+  - lvm2
   - NetworkManager
   - parted
   - python-devel
